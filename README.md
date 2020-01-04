@@ -6,7 +6,7 @@ Member : <br>
   <li>Elwin Duha (161402011)</li>
   <li>Jhon Rendy Sortono (161402017)</li>
   <li>Sonia Elisa Telaumbanua (161402045)</li>
-  <li>Aldo Stepanus Simarmata (161402064)</li>
+  <li>Aldo Stepanus Simarmata (161402065)</li>
   <li>Gebriel Juliendi Sitorus (161402143)</li>
 </ol>
 
