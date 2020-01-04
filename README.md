@@ -1,6 +1,15 @@
 # Baguxin
 Mobile Programming Application
 
+Member : <br>
+<ol>
+  <li>Elwin Duha (161402011)</li>
+  <li>Jhon Rendy Sortono (161402017)</li>
+  <li>Sonia Elisa Telaumbanua (161402045)</li>
+  <li>Aldo Stepanus Simarmata (161402064)</li>
+  <li>Gebriel Juliendi Sitorus (161402143)</li>
+</ol>
+
 # Wireframe
 We use WHIMSICAL to design the wireframe.
 Click link below to view the wireframe:
