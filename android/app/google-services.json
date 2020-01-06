@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "27075471893",
+    "firebase_url": "https://baguxin-d5889.firebaseio.com",
+    "project_id": "baguxin-d5889",
+    "storage_bucket": "baguxin-d5889.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:27075471893:android:f01d096e32c4b97ba1bc1c",
+        "android_client_info": {
+          "package_name": "com.task.baguxin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "27075471893-cfkvgn6c32762di5uhfdfkd52lv48d1r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.task.baguxin",
+            "certificate_hash": "5648d0187c4467658bb00ffbe6d098ac3f338923"
+          }
+        },
+        {
+          "client_id": "27075471893-16qge1jnqjrnu0qoqdbjh8km17rjb4hr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVWHJ-C7j_Z5Yjozx0jt-kpWyli4HrNtw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "27075471893-16qge1jnqjrnu0qoqdbjh8km17rjb4hr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
