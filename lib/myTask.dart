@@ -26,10 +26,11 @@ class _MyTaskState extends State<MyTask> {
             ClipOval(
               child: new Image.network(widget.user.photoUrl),
             ),
-            new Padding(padding: const EdgeInsets.all(4.0),
+            new Padding(padding: const EdgeInsets.all(5.0),
               child: Text("Sign Out?", style: new TextStyle(fontSize: 16.0),),
             ),
             new Divider(),
+            new Padding(padding: const EdgeInsets.all(2.0)),
             new Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -44,7 +45,7 @@ class _MyTaskState extends State<MyTask> {
                     children: <Widget>[
                       Icon(Icons.check),
                       Padding(
-                        padding: const EdgeInsets.all(4.0),
+                        padding: const EdgeInsets.all(2.0),
                       ),
                       Text("Yes")
                     ],
@@ -58,7 +59,7 @@ class _MyTaskState extends State<MyTask> {
                     children: <Widget>[
                       Icon(Icons.close),
                       Padding(
-                        padding: const EdgeInsets.all(4.0),
+                        padding: const EdgeInsets.all(2.0),
                       ),
                       Text("Cancel")
                     ],
@@ -80,7 +81,7 @@ class _MyTaskState extends State<MyTask> {
       floatingActionButton: new FloatingActionButton(
         onPressed: (){
           Navigator.of(context).push(new MaterialPageRoute(
-            builder: (BuildContext context)=> new CreateTask()),
+            builder: (BuildContext context)=> new CreateTask(email: widget.user.email,)),
           );
         },
         child: Icon(Icons.add),

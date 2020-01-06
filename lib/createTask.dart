@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CreateTask extends StatefulWidget {
+  CreateTask({this.email});
+  final String email;
   @override
   _CreateTaskState createState() => _CreateTaskState();
 }
@@ -10,6 +13,8 @@ class _CreateTaskState extends State<CreateTask> {
 
   DateTime _dueDate = new DateTime.now();
   String _dateText = '';
+  String kegiatanBaru = '';
+  String catatan = '';
 
   Future<Null> _selectDueDate(BuildContext context) async{
     final picked = await showDatePicker(
@@ -25,6 +30,19 @@ class _CreateTaskState extends State<CreateTask> {
         _dateText = "${picked.day}/${picked.month}/${picked.year}";
       });
     }
+  }
+
+  void _tambahData(){
+    Firestore.instance.runTransaction((Transaction transaction) async{
+      CollectionReference reference = Firestore.instance.collection('task');
+      await reference.add({
+        "email" : widget.email,
+        "title" : kegiatanBaru,
+        "duedate" : _dateText,
+        "note" : catatan,
+      });
+    });
+    Navigator.pop(context);
   }
 
   @override
@@ -67,6 +85,11 @@ class _CreateTaskState extends State<CreateTask> {
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: TextField(
+              onChanged: (String str){
+                setState(() {
+                  kegiatanBaru = str;
+                });
+              },
               decoration: new InputDecoration(
                 icon: Icon(Icons.dashboard),
                 hintText: "Kegiatan Baru",
@@ -93,6 +116,11 @@ class _CreateTaskState extends State<CreateTask> {
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: TextField(
+              onChanged: (String str){
+                setState(() {
+                  catatan = str;
+                });
+              },
               decoration: new InputDecoration(
                   icon: Icon(Icons.note),
                   hintText: "Catatan",
@@ -108,7 +136,9 @@ class _CreateTaskState extends State<CreateTask> {
               children: <Widget>[
                IconButton(
                    icon: Icon(Icons.check, size: 40.0,),
-                   onPressed: (){},
+                   onPressed: (){
+                     _tambahData();
+                   },
                ),
                 IconButton(
                   icon: Icon(Icons.close, size: 40.0,),
