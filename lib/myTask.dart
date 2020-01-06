@@ -201,55 +201,68 @@ class TaskList extends StatelessWidget {
         String duedate = "${tgl.day}/${tgl.month}/${tgl.year}";
         String note = document[i].data['note'].toString();
 
-        return Padding(
-          padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(title,style: new TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Icon(Icons.date_range, color: Colors.orange,),
-                          ),
-                          Expanded(child: Text(duedate,style: new TextStyle(fontSize: 16.0,),)),
-                        ],
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Icon(Icons.note, color: Colors.orange,),
-                          ),
-                          Expanded(child: Text(note,style: new TextStyle(fontSize: 16.0,),)),
-                        ],
-                      ),
-                    ],
+        return Dismissible(
+          key: new Key(document[i].documentID),
+          onDismissed: (direction){
+            Firestore.instance.runTransaction((transaction) async{
+              DocumentSnapshot snapshot =
+                  await transaction.get(document[i].reference);
+                  await transaction.delete(snapshot.reference);
+            });
+            Scaffold.of(context).showSnackBar(
+              new SnackBar(content: new Text("Kegiatan Dihapus"))
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Text(title,style: new TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),),
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Icon(Icons.date_range, color: Colors.orange,),
+                            ),
+                            Expanded(child: Text(duedate,style: new TextStyle(fontSize: 16.0,),)),
+                          ],
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Icon(Icons.note, color: Colors.orange,),
+                            ),
+                            Expanded(child: Text(note,style: new TextStyle(fontSize: 16.0,),)),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              new IconButton(
-                icon: Icon(Icons.edit, color: Colors.orange,),
-                onPressed: (){
-                  Navigator.of(context).push(new MaterialPageRoute(
-                      builder: (BuildContext context)=> new EditTask(
-                        title: title,
-                        note: note,
-                        duedate: tgl,
-                        index: document[i].reference,
-                      )),);
-                },
-              ),
-            ],
+                new IconButton(
+                  icon: Icon(Icons.edit, color: Colors.orange,),
+                  onPressed: (){
+                    Navigator.of(context).push(new MaterialPageRoute(
+                        builder: (BuildContext context)=> new EditTask(
+                          title: title,
+                          note: note,
+                          duedate: tgl,
+                          index: document[i].reference,
+                        )),);
+                  },
+                ),
+              ],
+            ),
           ),
         );
       },
