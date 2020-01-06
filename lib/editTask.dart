@@ -3,20 +3,39 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class EditTask extends StatefulWidget {
-  EditTask({this.email});
-  final String email;
+  EditTask({this.title,this.duedate,this.note,this.index});
+  final String title;
+  final String note;
+  final DateTime duedate;
+  final index;
+
   @override
   _EditTaskState createState() => _EditTaskState();
 }
 
 class _EditTaskState extends State<EditTask> {
 
-  DateTime _dueDate = new DateTime.now();
-  String _dateText = '';
-  String kegiatanBaru = '';
-  String catatan = '';
+  TextEditingController controllerTitle;
+  TextEditingController controllernote;
 
-  Future<Null> _selectDueDate(BuildContext context) async{
+  DateTime _dueDate;
+  String _dateText = '';
+  String kegiatanBaru;
+  String catatan;
+  void _editTask(){
+    Firestore.instance.runTransaction((Transaction transaction) async{
+      DocumentSnapshot snapshot =
+          await transaction.get(widget.index);
+          await transaction.update(snapshot.reference, {
+            "title" : kegiatanBaru,
+            "note" : catatan,
+            "duedate" : _dueDate
+          });
+    });
+    Navigator.pop(context);
+  }
+
+  Future<Null> _selectDueDate(BuildContext context) async {
     final picked = await showDatePicker(
         context: context,
         initialDate: _dueDate,
@@ -24,7 +43,7 @@ class _EditTaskState extends State<EditTask> {
         lastDate: DateTime(2100)
     );
 
-    if(picked != null){
+    if (picked != null) {
       setState(() {
         _dueDate = picked;
         _dateText = "${picked.day}/${picked.month}/${picked.year}";
@@ -36,7 +55,14 @@ class _EditTaskState extends State<EditTask> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _dueDate = widget.duedate;
     _dateText = "${_dueDate.day}/${_dueDate.month}/${_dueDate.year}";
+
+    kegiatanBaru = widget.title;
+    catatan = widget.note;
+
+    controllerTitle = new TextEditingController(text: widget.title);
+    controllernote = new TextEditingController(text: widget.note);
   }
 
   @override
@@ -49,7 +75,7 @@ class _EditTaskState extends State<EditTask> {
             width: double.infinity,
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("img/bg-04.png"),fit: BoxFit.cover
+                  image: AssetImage("img/bg-04.png"), fit: BoxFit.cover
               ),
             ),
             child: Column(
@@ -63,16 +89,18 @@ class _EditTaskState extends State<EditTask> {
                   ),),
                 Padding(
                   padding: const EdgeInsets.only(top: 15.0),
-                  child: Text("Ubah Kegiatan", style: new TextStyle(fontSize: 19.0,color: Colors.white),),
+                  child: Text("Ubah Kegiatan",
+                    style: new TextStyle(fontSize: 19.0, color: Colors.white),),
                 ),
-                Icon(Icons.add, color: Colors.white, size: 25.0,)
+                Icon(Icons.edit, color: Colors.white, size: 25.0,)
               ],
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: TextField(
-              onChanged: (String str){
+              controller: controllerTitle,
+              onChanged: (String str) {
                 setState(() {
                   kegiatanBaru = str;
                 });
@@ -93,9 +121,11 @@ class _EditTaskState extends State<EditTask> {
                   padding: const EdgeInsets.only(right: 20.0),
                   child: new Icon(Icons.date_range),
                 ),
-                new Expanded(child: Text("Tenggat", style: new TextStyle(fontSize: 22.0, color: Colors.black54),)),
-                new FlatButton(onPressed: ()=> _selectDueDate(context),
-                  child: Text(_dateText, style: new TextStyle(fontSize: 22.0, color: Colors.black54),),
+                new Expanded(child: Text("Tenggat", style: new TextStyle(
+                    fontSize: 22.0, color: Colors.black54),)),
+                new FlatButton(onPressed: () => _selectDueDate(context),
+                  child: Text(_dateText, style: new TextStyle(
+                      fontSize: 22.0, color: Colors.black54),),
                 ),
               ],
             ),
@@ -103,7 +133,8 @@ class _EditTaskState extends State<EditTask> {
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: TextField(
-              onChanged: (String str){
+              controller: controllernote,
+              onChanged: (String str) {
                 setState(() {
                   catatan = str;
                 });
@@ -123,13 +154,13 @@ class _EditTaskState extends State<EditTask> {
               children: <Widget>[
                 IconButton(
                   icon: Icon(Icons.check, size: 40.0,),
-                  onPressed: (){
-
+                  onPressed: () {
+                    _editTask();
                   },
                 ),
                 IconButton(
                   icon: Icon(Icons.close, size: 40.0,),
-                  onPressed: (){
+                  onPressed: () {
                     Navigator.pop(context);
                   },
                 ),

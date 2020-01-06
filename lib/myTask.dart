@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'createTask.dart';
+import 'editTask.dart';
 
 class MyTask extends StatefulWidget {
   MyTask({this.user, this.googleSignIn});
@@ -196,7 +197,8 @@ class TaskList extends StatelessWidget {
       itemCount: document.length,
       itemBuilder: (BuildContext context, int i){
         String title = document[i].data['title'].toString();
-        String duedate = document[i].data['duedate'].toString();
+        DateTime tgl = document[i].data['duedate'].toDate();
+        String duedate = "${tgl.day}/${tgl.month}/${tgl.year}";
         String note = document[i].data['note'].toString();
 
         return Padding(
@@ -210,7 +212,7 @@ class TaskList extends StatelessWidget {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(title,style: new TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),),
+                        child: Text(title,style: new TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),),
                       ),
                       Row(
                         children: <Widget>[
@@ -218,7 +220,7 @@ class TaskList extends StatelessWidget {
                             padding: const EdgeInsets.only(right: 8.0),
                             child: Icon(Icons.date_range, color: Colors.orange,),
                           ),
-                          Text(duedate,style: new TextStyle(fontSize: 16.0,),),
+                          Expanded(child: Text(duedate,style: new TextStyle(fontSize: 16.0,),)),
                         ],
                       ),
                       Row(
@@ -238,8 +240,13 @@ class TaskList extends StatelessWidget {
               new IconButton(
                 icon: Icon(Icons.edit, color: Colors.orange,),
                 onPressed: (){
-//                  Navigator.of(context).push(new MaterialPageRoute(
-//                      builder: (BuildContext context)=> new EditData()),),
+                  Navigator.of(context).push(new MaterialPageRoute(
+                      builder: (BuildContext context)=> new EditTask(
+                        title: title,
+                        note: note,
+                        duedate: tgl,
+                        index: document[i].reference,
+                      )),);
                 },
               ),
             ],
