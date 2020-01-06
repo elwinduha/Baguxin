@@ -201,31 +201,48 @@ class TaskList extends StatelessWidget {
 
         return Padding(
           padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(title,style: new TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),),
-                Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: Icon(Icons.date_range, color: Colors.orange,),
-                    ),
-                    Text(duedate,style: new TextStyle(fontSize: 15.0,),),
-                  ],
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Text(title,style: new TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),),
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Icon(Icons.date_range, color: Colors.orange,),
+                          ),
+                          Text(duedate,style: new TextStyle(fontSize: 16.0,),),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Icon(Icons.note, color: Colors.orange,),
+                          ),
+                          Expanded(child: Text(note,style: new TextStyle(fontSize: 16.0,),)),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-                Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: Icon(Icons.note, color: Colors.orange,),
-                    ),
-                    Expanded(child: Text(note,style: new TextStyle(fontSize: 18.0,),)),
-                  ],
-                ),
-              ],
-            ),
+              ),
+              new IconButton(
+                icon: Icon(Icons.edit, color: Colors.orange,),
+                onPressed: (){
+//                  Navigator.of(context).push(new MaterialPageRoute(
+//                      builder: (BuildContext context)=> new EditData()),),
+                },
+              ),
+            ],
           ),
         );
       },
